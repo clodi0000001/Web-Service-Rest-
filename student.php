@@ -13,8 +13,7 @@ switch($method) {
     if (isset($id)){
       $student = $student->find($id);
       $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
-    }
-    if(!isset($id)){ 
+    }else{ 
       $students = $student->all();
       $js_encode = json_encode(array('state'=>TRUE, 'students'=>$students),true);
     }
@@ -23,29 +22,18 @@ switch($method) {
     break;
 
   case 'POST':
-    /*
-    $id = $_GET['id'];
-    $name = $_GET['name'];
-    $surname= $_GET['surname'];
-    $sidiCode = $_GET['sidiCode'];
-    $taxCode = $_GET['taxCode']; */ 
-    $id = '2';
-    $name = 'Mario';
-    $surname= 'Rossi';
-    $sidi_Code = '123456';
-    $tax_Code = 'QWERTY';
-    if (isset($id, $name, $surname, $sidi_Code, $tax_Code)){
-      $student = $student->insert($id, $name,$surname,$sidi_Code,$tax_Code);
-      $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
-    }else{
-      echo "non inserito";
-    }
+    $body = file_get_contents("php://input");
+    $js_decoded = json_decode($body, true);
+    $student->_name = $js_decoded["_name"];
+    $student->_surname = $js_decoded["_surname"];
+    $student->_sidiCode = $js_decoded["_sidiCode"];
+    $student->_taxCode = $js_decoded["_taxCode"];
+    $student = $student->insert();
     header("Content-Type: application/json");
     echo($js_encode);
     break;
 
   case 'DELETE':
-     echo "detele";
       $id = $_GET['id'];
       if (isset($id)){
         $student = $student->delete($id);

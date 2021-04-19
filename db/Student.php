@@ -15,7 +15,7 @@ class Student
   }
 
   public function find($id){
-    $sql = "SELECT * FROM student WHERE id=:id";
+    $sql = "SELECT id, name, surname, sidi_Code, tax_Code FROM student WHERE id=:id";
     $stmt = $this->db->prepare($sql);
     $data = [
       'id' => $id
@@ -25,24 +25,23 @@ class Student
     return $result;
   }
   public function all(){
-    $sql = "SELECT * FROM student";
+    $sql = "SELECT id, name, surname, sidi_Code, tax_Code FROM student";
     $stmt = $this->db->prepare($sql);
-    $stmt->execute($data);
+    $stmt->execute();
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
     return $result;
   }
-  public function insert($id, $name, $surname, $sidi_Code, $tax_Code){
+  public function insert(){
     $sql = " INSERT INTO student
-        (id, name, surname, sidi_Code,tax_Code)
+        ( name, surname, sidi_Code,tax_Code)
     VALUES
-        (:id, :name, :surname, :sidi_Code,:tax_Code);";
+        ( :name, :surname, :sidi_Code,:tax_Code);";
     $stmt = $this->db->prepare($sql);
     $data =[
-      'id' => $id,
-      'name' => $name,
-      'surname'  => $surname,
-      'sidi_Code' => $sidi_Code,
-      'tax_Code' => $tax_Code
+      'name' =>  $this->name,
+      'surname'  =>  $this->surname,
+      'sidi_Code' =>  $this->sidi_Code,
+      'tax_Code' =>  $this->tax_Code
     ];
     $stmt->execute($data);
   }  
@@ -50,8 +49,8 @@ class Student
   public function delete($id){
     $sql = "DELETE FROM student WHERE id=:id";
     $stmt = $this->db->prepare($sql);
-    $data =" eliminato";
-    $stmt->execute($data);
+    $result =" Rimosso studente" + $id;
+    $stmt->execute($result);
   }
 
   public function update($id){
