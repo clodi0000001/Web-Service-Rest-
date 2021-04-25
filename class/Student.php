@@ -1,5 +1,5 @@
 <?php
-include("config.php");
+include("./db/config.php");
 class Student 
 {
   private $db;
@@ -25,7 +25,7 @@ class Student
     return $result;
   }
   public function all(){
-    $sql = "SELECT id, name, surname, sidi_Code, tax_Code FROM student";
+    $sql = "SELECT * FROM student";
     $stmt = $this->db->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
