@@ -1,24 +1,24 @@
 <?php
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 $method = $_SERVER["REQUEST_METHOD"];
-$method = 'DELETE';
+//$method = 'DELETE';
 //$method = 'POST';
 //$method = 'PUT';
+$method = 'GET';
 include('./class/Student.php');
 $student = new Student();
-$id = $_GET['id'];
 switch($method) {
   case 'GET':
-    if (isset($id)){
+    /*if (isset($_GET['id'])){
+      $id = $_GET['id'];
       $student = $student->find($id);
       //$js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
       $js_encode = json_encode(array('student'=>$student),true);
-    } else {   
-      $students = $student->all();
+    } else {  */ 
+      $student = $student->all();
       //$js_encode = json_encode(array('state'=>TRUE, 'students'=>$students),true);
-      $js_encode1 = json_encode($student);
-      echo($js_encode1);
-    }
+      $js_encode = json_encode($student);
+    //}
     header("Content-Type: application/json");
     echo($js_encode);
     break;
@@ -38,8 +38,9 @@ switch($method) {
       $id = $_GET['id'];
       if (isset($id) && $id != ""){
         $student = $student->delete($id);
-        $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
       }
+      $student = $student->all();
+      $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
       header("Content-Type: application/json");
       echo($js_encode);
     break;
