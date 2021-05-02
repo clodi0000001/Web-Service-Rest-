@@ -31,20 +31,21 @@ class Student
     $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
     return $result;
   }
-  public function insert(){
+  public function insert($student){
     $sql = " INSERT INTO student
         ( id,name, surname, sidi_Code,tax_Code)
     VALUES
         ( :id, :name, :surname, :sidi_Code,:tax_Code);";
     $stmt = $this->db->prepare($sql);
-    $data =[
-      'id'=> $this->id,
-      'name' =>  $this->name,
-      'surname'  =>  $this->surname,
-      'sidi_Code' =>  $this->sidi_Code,
-      'tax_Code' =>  $this->tax_Code
+    $data = [
+      'name' => $student->name,
+      'surname' => $student->surname,
+      'sidiCode' => $student->sidi_Code,
+      'taxCode' => $student->tax_Code
     ];
     $stmt->execute($data);
+    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    return $result;
   }  
 
   public function delete($id){
@@ -53,7 +54,7 @@ class Student
     $stmt->execute();
   }
 
-  public function update($id){
+  public function update($id,$student){
     $sql = "UPDATE person SET 
         name = :name,
         surname  = :surname,

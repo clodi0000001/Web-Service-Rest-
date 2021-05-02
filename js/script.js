@@ -49,7 +49,7 @@ function getOne(){
 }
 function Remove(id){
     $.ajax({
-        url: "http://localhost/tpsit/Web-Service-Rest-/detale.php/?id="+id,
+        url: "http://localhost/tpsit/Web-Service-Rest-/student.php/?id="+id,
           type: "DELETE",
           contentType: 'json',
           success: function (data,textstatus,jQxhr){
@@ -64,15 +64,16 @@ function add(){
     var surname = document.getElementById("surname").value;
     var sidi_code = document.getElementById("sidi_code").value;
     var sidi_tax = document.getElementById("sidi_tax").value;
-
+    var id = 3;
     var postData ={
+        "id": id,
         "name": name,
         "surname": surname,
         "sidi_code": sidi_code,
         "tax_code": sidi_tax
     };
     jQuery.ajax ({
-        url:  "http://localhost/tpsit/Web-Service-Rest-/student.php/?",
+        url:  "http://localhost/tpsit/Web-Service-Rest-/student.php/?id="+id,
         type: "POST",
         data: JSON.stringify(postData),
         dataType: "json",
@@ -80,9 +81,9 @@ function add(){
         error: function (data) {
             alert(data.responseText);
         },
-        success: function(data){
-                if (data['status'] == true) {
-                    alert("Successfully Added Studeny!");
+        success: function(data,textstatus,jQxhr){
+            if (data['status'] == true) {
+                    alert("Successfully Added Student!");
                 }
         }
       });
@@ -92,30 +93,29 @@ function update(ID){
     var _surname = prompt("Please enter your surname:", "");
     var _sidi_code= prompt("Please enter your sidi code:", "");
     var _tax_code = prompt("Please enter your tax code:", "");
-    $.ajax(
-    {
-        type: "POST",
+    
+    var postData ={
+        "id": ID,
+        "name": _name,
+        "surname": _surname,
+        "sidi_code": _sidi_code,
+        "tax_code": _tax_code
+    };
+    $.ajax({
+        type: "PUT",
         url: 'http://localhost/tpsit/Web-Service-Rest-/student.php?id='+ID,
         dataType: 'json',
-        data: {
-            id: ID,
-            name: _name,
-            email: _surname,        
-            password: _sidi_code,
-            phone: _tax_code
-        },
+        data: JSON.stringify(postData),
         error: function (result) {
             alert(result.responseText);
         },
-        success: function (result) {
-            if (result['status'] == true) {
-                alert("Successfully Updated Student!");
+        success: function (data,textstatus,jQxhr)
+		{
+            if (data['status'] == true) {
+                alert("Successfully Edit Student!");
             }
-            else {
-                alert(result['message']);
-            }
-        }
-    });
+		}
+	});
 }
 
 /*

@@ -4,7 +4,7 @@ $method = $_SERVER["REQUEST_METHOD"];
 //$method = 'DELETE';
 //$method = 'POST';
 //$method = 'PUT';
-$method = 'GET';
+//$method = 'GET';
 include('./class/Student.php');
 $student = new Student();
 switch($method) {
@@ -42,17 +42,16 @@ switch($method) {
         }else{
           $js_encode = json_encode("ERRORE",true);
         }
-        //header("Content-Type: application/json");
-        //echo($js_encode);
+        header("Content-Type: application/json");
+        echo($js_encode);
     break;
 
   case 'PUT':
-    $id = $_GET['id'];
-    if (isset($id)){
-      $student = $student->update($id);
-      $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
+    if (isset($_GET['id'])){
+      $student = $student->update($id,$student);
+      //$js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
       header("Content-Type: application/json");
-      echo($js_encode);
+      //echo($js_encode);
     }
     break;
 
