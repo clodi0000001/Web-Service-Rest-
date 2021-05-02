@@ -1,10 +1,8 @@
 <?php
 header("Access-Control-Allow-Methods: GET,POST,PUT,DELETE");
 $method = $_SERVER["REQUEST_METHOD"];
-//$method = 'DELETE';
-//$method = 'POST';
-//$method = 'PUT';
-$method = 'GET';
+$method = 'DELETE';
+
 include('./class/Student.php');
 $student = new Student();
 switch($method) {
@@ -18,7 +16,7 @@ switch($method) {
       $student = $student->all();
       //$js_encode = json_encode(array('state'=>TRUE, 'students'=>$students),true);
       $js_encode = json_encode($student);
-    }
+    //}
     header("Content-Type: application/json");
     echo($js_encode);
     break;
@@ -35,15 +33,14 @@ switch($method) {
     break;
 
   case 'DELETE':
-      if (isset($_GET['id'])){
-        $id = $_GET['id'];
-          $student = $student->delete($id);
-          $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
-        }else{
-          $js_encode = json_encode("ERRORE",true);
-        }
-        //header("Content-Type: application/json");
-        //echo($js_encode);
+      $id = $_GET['id'];
+      if (isset($id) && $id != ""){
+        $student = $student->delete($id);
+      }
+      $student = $student->all();
+      $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
+      header("Content-Type: application/json");
+      echo($js_encode);
     break;
 
   case 'PUT':
@@ -51,8 +48,6 @@ switch($method) {
     if (isset($id)){
       $student = $student->update($id);
       $js_encode = json_encode(array('state'=>TRUE, 'student'=>$student),true);
-      header("Content-Type: application/json");
-      echo($js_encode);
     }
     break;
 
